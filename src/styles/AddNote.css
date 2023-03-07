@@ -1,0 +1,67 @@
+.newNoteContent{
+    display: flex;
+    flex-direction: column;
+}
+textarea {
+    border: none;
+    resize: none !important;
+    background-color: rgba(2, 3, 11, 0);
+    outline: none;
+    margin-top: 15px !important;
+    padding: 7px;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+textarea::-webkit-scrollbar {
+    width: 7px;
+}
+textarea::-webkit-scrollbar-thumb {
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    border-right: 2px solid rgba(2, 3, 11, 0.972);;
+}
+input {
+    height: 40px;
+    border: none;
+    resize: none;
+    background-color: rgba(2, 3, 11, 0);
+    outline: none;
+    padding: 7px;
+    font-size: 20px;
+    font-weight: bold;
+}
+input:hover{
+    background-color: #1c202e;
+    border-radius: 8px;
+}
+input:focus{
+    background-color: #1c202e;
+    border-radius: 8px;
+}
+textarea:hover{
+    background-color: #1c202e;
+    border-radius: 8px;
+}
+textarea:focus{
+    background-color: #1c202e;
+    border-radius: 8px;
+}
+.save {
+    font-size: 25px;
+    background-color: rgba(2, 3, 11, 0);
+    border-color: rgba(2, 3, 11, 0);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+.save:hover{
+    background-color: rgb(204, 171, 10);
+    transition: 0.3s;
+}
+.noteFooter{
+    padding-top: 5px;
+}
+.noteFooter small{
+    padding-top: 15px;
+}

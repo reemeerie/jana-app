@@ -1,0 +1,12 @@
+.notes {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    width: 80%;
+}
+.spinnerCont {
+    display: flex;
+    padding-top: 20%;
+}

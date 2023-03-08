@@ -10,7 +10,7 @@ const Note = ({note}) => {
   let actualDate = `${day}-${month}-${year}`
   const token = JSON.parse(window.localStorage.getItem('token'))
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const url = `https://jana-api.vercel.app/api/notes/${note.id}` 
     const config = {
       headers: {
@@ -18,11 +18,12 @@ const Note = ({note}) => {
       }
     }
     try {
-      axios.delete(url, config)
-      window.location.reload()
+      const res = await axios.delete(url, config)
+      console.log(res)
     } catch (err) {
       console.log(err)
     }
+    window.location.reload()
   }
 
   return (

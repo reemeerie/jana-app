@@ -7,6 +7,8 @@ import { Spinner } from 'react-bootstrap'
 
 const NotesList = () => {
   const [notes, setNotes] = useState({})
+  const [loading, setLoading] = useState(true)
+
   const token = JSON.parse(window.localStorage.getItem('token'))
   useEffect(() => {
     const getNotes = async () => {
@@ -15,15 +17,20 @@ const NotesList = () => {
             Authorization: `Bearer ${token}`
         }
       }
-      const res = await axios.get('https://jana-api.vercel.app/api/notesByUserid', config)
-      setNotes(res.data.data)
+      try {
+        const res = await axios.get('https://jana-api.vercel.app/api/notesByUserid', config)
+        setNotes(res.data.data)
+        setLoading(false)
+      } catch (err) {
+        console.log(err)
+      }
     }
     getNotes() 
   }, [token])
 
   return (
     <>
-    {notes.length > 1 ? <div className='notes'>
+    {!loading ? <div className='notes'>
                           {notes.map((note, key) => {
                             return <Note note={note} key={key}/>
                           })}

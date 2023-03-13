@@ -44,7 +44,7 @@ const validateForm = (form) => {
 }
 
 const SignUp = () => {
-  const { form, errors, handleChange, handleBlur, handleSignup } = useForm(initialForm, validateForm, url)
+  const { form, errors, handleChange, handleBlur, handleSignup, wrong, ok } = useForm(initialForm, validateForm, url)
 
   return (
     <div className='loginContainer'>
@@ -74,6 +74,7 @@ const SignUp = () => {
             <div className='btnContainer'>
               <button type='submit' className='button' value='Sign up'>Sign Up</button>
             </div>
+            { wrong ? <p className={ ok ? 'created': 'error'}>{wrong}</p>: <></>}
             <Link to='/' className='create'>Already a member? Login</Link>
         </form>
       </div>

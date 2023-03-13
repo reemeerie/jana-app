@@ -31,7 +31,7 @@ const validateForm = (form) => {
 }
 
 const Login = () => {
-    const { token, form, errors, handleChange, handleBlur, handleLogin } = useForm(initialForm, validateForm, url)
+    const { token, form, errors, handleChange, handleBlur, handleLogin, wrong } = useForm(initialForm, validateForm, url)
 
     useEffect(() => {
       if (token) {
@@ -70,6 +70,7 @@ const Login = () => {
             <div className='btnContainer'>
               <button type='submit' className='button' value='Login'>Login</button>
             </div>
+            {wrong ? <p className='error'>{wrong}</p>: <></>}
             <Link to='/signUp'className='create'>Create new account</Link>
         </form>
       </div>

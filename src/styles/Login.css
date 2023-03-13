@@ -101,6 +101,11 @@
     padding-top: 15px;
     font-weight: bold
 }
+.created{
+    color: rgb(0, 153, 18);
+    padding-top: 15px;
+    font-weight: bold
+}
 @media (max-width: 1000px) {
     .input-field{
         width: 400px;

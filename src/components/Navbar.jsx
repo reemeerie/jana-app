@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import "../styles/Navbar.css"
 
-const Navbar = () => {
+export const Navbar = () => {
   const [token] = useLocalStorage("token", null)
 
   useEffect(() => {}, [token])
@@ -34,5 +34,3 @@ const Navbar = () => {
     </>
   )
 }
-
-export default Navbar

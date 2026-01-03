@@ -1,7 +1,7 @@
-import "../styles/Note.css"
 import axios from "axios"
+import "../styles/Note.css"
 
-const Note = ({ note }) => {
+export const Note = ({ note }) => {
   const date = new Date(note.date)
   let day = date.getDate()
   const month = date.getMonth() + 1
@@ -40,5 +40,3 @@ const Note = ({ note }) => {
     </div>
   )
 }
-
-export default Note

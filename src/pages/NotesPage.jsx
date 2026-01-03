@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { NotesList } from "../components/NotesList"
 import "../styles/Notes.css"
-import NotesList from "../components/NotesList"
 
-const Notes = () => {
+export const NotesPage = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -21,5 +21,3 @@ const Notes = () => {
     </>
   )
 }
-
-export default Notes

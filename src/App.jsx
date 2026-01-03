@@ -1,10 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import Navbar from "./components/Navbar"
-import LoginPage from "./pages/LoginPage"
-import NotesPage from "./pages/NotesPage"
-import SignUpPage from "./pages/SignUpPage"
+import { LoginPage } from "./pages/LoginPage"
+import { NotesPage } from "./pages/NotesPage"
+import { SignUpPage } from "./pages/SignUpPage"
+import { Navbar } from "./components/Navbar"
 import "./App.css"
-import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
   return (

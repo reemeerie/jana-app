@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import Note from "./Note"
+import { Spinner } from "./Spinner"
+import { Note } from "./Note"
+import { AddNote } from "./AddNote"
 import "../styles/NotesList.css"
-import AddNote from "./AddNote"
-import { Spinner } from "react-bootstrap"
 
-const NotesList = () => {
+export const NotesList = () => {
   const [notes, setNotes] = useState({})
   const [loading, setLoading] = useState(true)
 
@@ -50,5 +50,3 @@ const NotesList = () => {
     </>
   )
 }
-
-export default NotesList

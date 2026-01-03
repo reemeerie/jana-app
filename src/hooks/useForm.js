@@ -1,13 +1,16 @@
-import { useLocalStorage } from "./useLocalStorage"
 import { useState } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { useLocalStorage } from "./useLocalStorage"
 
 export const useForm = (initialForm, validateForm, url) => {
   const [token, setToken] = useLocalStorage("token", null)
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
   const [error, setError] = useState()
-  const [ok, setOk] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [touched, setTouched] = useState({})
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -15,49 +18,69 @@ export const useForm = (initialForm, validateForm, url) => {
   }
 
   const handleBlur = (e) => {
-    handleChange(e)
+    const { name } = e.target
+    setTouched((prev) => ({ ...prev, [name]: true }))
     setErrors(validateForm(form))
+    setError()
   }
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    if (Object.keys(errors).length === 0) {
-      try {
-        const res = await axios.post(url, form)
-        console.log(res)
-        setToken(res.data.data)
-      } catch (error) {
-        setError(error.response.data.error)
-      }
+    /* Establezco todos los campos como touched */
+    setTouched(touchAll(form))
+
+    /* Valido nuevamente el formulario antes de enviar */
+    const errs = validateForm(form)
+    setErrors(errs)
+    if (Object.keys(errs).length > 0) return
+
+    setError("")
+    setIsLoading(true)
+    try {
+      const res = await axios.post(url, form)
+      setToken(res.data.data)
+    } catch (err) {
+      setError(err?.response?.data?.error ?? "Login failed")
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const handleSignup = async (e) => {
     e.preventDefault()
-    if (Object.keys(errors).length === 0) {
-      try {
-        const res = await axios.post(url, form)
-        console.log(res.data.data)
-        if (res.data.data === "User created succesfully") {
-          setOk(true)
-        }
-        setError(res.data.data)
-      } catch (err) {
-        console.log(err)
-        setError(err.response.data.warning)
-      }
+    /* Establezco todos los campos como touched */
+    setTouched(touchAll(form))
+
+    /* Valido nuevamente el formulario antes de enviar */
+    const errs = validateForm(form)
+    setErrors(errs)
+    if (Object.keys(errs).length > 0) return
+
+    setError("")
+    setIsLoading(true)
+    try {
+      await axios.post(url, form)
+      navigate("/login", { state: { justSignedUp: true } })
+    } catch (err) {
+      setError(err?.response?.data?.error ?? "Signup failed")
+    } finally {
+      setIsLoading(false)
     }
   }
 
+  const touchAll = (obj) =>
+    Object.fromEntries(Object.keys(obj).map((k) => [k, true]))
+
   return {
-    form,
-    errors,
     handleChange,
     handleBlur,
     handleLogin,
-    token,
     handleSignup,
+    token,
+    form,
+    errors,
     error,
-    ok,
+    isLoading,
+    touched,
   }
 }

@@ -1,5 +1,5 @@
 .navbarr {
-  height: 10vh;
+  height: 10dvh;
   width: 100%;
   background-color: rgba(2, 3, 11, 0.972);
   box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px,
@@ -10,7 +10,7 @@
   justify-content: space-between;
 }
 .loginNavbar {
-  height: 10vh;
+  height: 10dvh;
   width: 100%;
   background-color: rgba(2, 3, 11, 0.972);
   box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px,
@@ -21,7 +21,7 @@
   justify-content: center;
 }
 .fakeNav {
-  height: 10vh;
+  height: 10dvh;
   background-color: rgba(2, 3, 11, 0.972);
 }
 .navContainer {

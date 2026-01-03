@@ -1,6 +1,10 @@
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useForm } from "../hooks/useForm"
+import { useNavigate } from "react-router-dom"
+import { validateLogin } from "../utils/validations"
+import { Button } from "../components/Button"
+import { InputField } from "../components/InputField"
 import "../styles/Login.css"
 
 const initialForm = {
@@ -8,83 +12,65 @@ const initialForm = {
   password: "",
 }
 
-const url = "https://jana-api.vercel.app/api/login"
+const baseurl = import.meta.env.VITE_API_URL
 
-const validateForm = (form) => {
-  let errors = {}
-  let regexPassword = /^(?=.*?[a-z]).{8,100}$/
-  let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,150}$/
-
-  if (!form.email.trim()) {
-    errors.email = "Please enter an email"
-  } else if (!regexEmail.test(form.email.trim())) {
-    errors.email = "Please enter a valid email"
-  }
-
-  if (!form.password.trim()) {
-    errors.password = "Please enter a password"
-  } else if (!regexPassword.test(form.password.trim())) {
-    errors.password = "Please enter a valid password"
-  }
-
-  return errors
-}
-
-const Login = () => {
-  const { token, form, errors, handleChange, handleBlur, handleLogin, error } =
-    useForm(initialForm, validateForm, url)
+export const LoginPage = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const justSignedUp = location.state?.justSignedUp
+  const {
+    token,
+    form,
+    errors,
+    handleChange,
+    handleBlur,
+    handleLogin,
+    error,
+    touched,
+    isLoading,
+  } = useForm(initialForm, validateLogin, `${baseurl}/login`)
 
   useEffect(() => {
-    if (token) {
-      window.location.href = "/notes"
-    }
-  }, [token])
+    if (token) navigate("/notes")
+  }, [token, navigate])
 
   return (
     <>
-      <div className="loginContainer">
+      <section className="loginContainer">
         <form onSubmit={handleLogin} className="formContent">
           <h2 className="welcome">Welcome back!</h2>
-          <p className="subtitle">Login to continue</p>
-          <div className="input-field">
-            <i className="fa-solid fa-envelope"></i>
-            <input
-              type="email"
-              name="email"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="email"
-              placeholder="Email"
-              value={form.email}
-            />
-          </div>
-          {errors.email ? <p className="error">{errors.email}</p> : <></>}
-          <div className="input-field">
-            <i className="fa-solid fa-lock"></i>
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="password"
-              placeholder="Password"
-              value={form.password}
-            />
-          </div>
-          {errors.password ? <p className="error">{errors.password}</p> : <></>}
-          <div className="btnContainer">
-            <button type="submit" className="button" value="Login">
-              Login
-            </button>
-          </div>
-          {error ? <p className="error">{error}</p> : <></>}
-          <Link to="/signUp" className="create">
+          <p className="subtitle">Log in to continue</p>
+          <InputField
+            icon="fa-solid fa-envelope"
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.email}
+            touched={touched.email}
+          />
+          <InputField
+            icon="fa-solid fa-lock"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.password}
+            touched={touched.password}
+          />
+          <Button label="Login" loading={isLoading} />
+          {error && <p className="error apiError">{error}</p>}
+          {/* Testear esto de useLocation() y estamos con el login*/}
+          {justSignedUp && "Usuario creau correctamente"}
+          <Link to="/signUp" className="createAccount">
             Create new account
           </Link>
         </form>
-      </div>
+      </section>
     </>
   )
 }
-
-export default Login

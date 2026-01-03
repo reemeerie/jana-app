@@ -2,7 +2,7 @@ import { useState } from "react"
 import axios from "axios"
 import "../styles/AddNote.css"
 
-const AddNote = () => {
+export const AddNote = () => {
   const baseUrl = "https://jana-api.vercel.app/api/notes"
   const date = new Date()
   const token = JSON.parse(window.localStorage.getItem("token"))
@@ -84,5 +84,3 @@ const AddNote = () => {
     </>
   )
 }
-
-export default AddNote

@@ -1,18 +1,18 @@
 @font-face {
   font-family: gothamBook;
-  src: url(/Gotham-Font/GothamBook.ttf) format("truetype");
+  src: url(/fonts/GothamBook.ttf) format("truetype");
 }
 @font-face {
   font-family: gothamMedium;
-  src: url(/Gotham-Font/GothamMedium.ttf) format("truetype");
+  src: url(/fonts/GothamMedium.ttf) format("truetype");
 }
 @font-face {
   font-family: gothamBookItalic;
-  src: url(/Gotham-Font/Gotham-BookItalic.otf) format("truetype");
+  src: url(/fonts/Gotham-BookItalic.otf) format("truetype");
 }
 @font-face {
   font-family: gothamLight;
-  src: url(/Gotham-Font/Gotham-Light.otf) format("truetype");
+  src: url(/fonts/Gotham-Light.otf) format("truetype");
 }
 
 * {
@@ -22,3 +22,14 @@
   color: #ececec;
   font-family: gothamBook, sans-serif;
 }
+
+body::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgba(2, 3, 11, 0.972);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #1c202e;
+  border-radius: 10px;
+  border-right: 2px solid rgba(2, 3, 11, 0.972);
+}
+

@@ -1,11 +1,11 @@
 import { useEffect } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useForm } from "../hooks/useForm"
 import { useNavigate } from "react-router-dom"
-import { validateLogin } from "../utils/validations"
+import { validateLogin } from "../utils/userValidations"
 import { Button } from "../components/Button"
 import { InputField } from "../components/InputField"
-import "../styles/Login.css"
+import "../styles/LoginPage.css"
 
 const initialForm = {
   email: "",
@@ -16,8 +16,6 @@ const baseurl = import.meta.env.VITE_API_URL
 
 export const LoginPage = () => {
   const navigate = useNavigate()
-  const location = useLocation()
-  const justSignedUp = location.state?.justSignedUp
   const {
     token,
     form,
@@ -62,10 +60,8 @@ export const LoginPage = () => {
             error={errors.password}
             touched={touched.password}
           />
-          <Button label="Login" loading={isLoading} />
+          <Button label="Log in" loading={isLoading} />
           {error && <p className="error apiError">{error}</p>}
-          {/* Testear esto de useLocation() y estamos con el login*/}
-          {justSignedUp && "Usuario creau correctamente"}
           <Link to="/signUp" className="createAccount">
             Create new account
           </Link>

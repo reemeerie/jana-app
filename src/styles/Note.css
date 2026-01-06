@@ -1,38 +1,53 @@
 .note {
   padding: 1rem;
   border: 2px solid #1c202e;
-  border-radius: 8px;
-  min-height: 300px;
+  border-radius: 0.5rem;
+  min-height: 22rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+.title,
+.content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+  resize: vertical;
 }
 .title {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.3rem;
   color: rgb(204, 171, 10);
 }
-.content {
-  margin-top: 15px;
-}
-.note .noteContent span {
-  margin-bottom: 20px;
+.noteContent{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 .noteFooter {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.delete {
-  font-size: 20px;
+.actionButton {
+  font-size: 1.2rem;
   background-color: rgba(2, 3, 11, 0);
   border-color: rgba(2, 3, 11, 0);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   cursor: pointer;
-}
-.delete:hover {
-  background-color: rgb(204, 171, 10);
   transition: 0.3s;
+}
+.actionButton:hover {
+  background-color: rgb(204, 171, 10);
+}
+.noteButtonContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+.noteFooter small {
+  padding-top: 1rem;
 }

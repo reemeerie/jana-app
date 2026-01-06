@@ -2,6 +2,7 @@ import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { useLocalStorage } from "./useLocalStorage"
+import { toastSuccess } from "../utils/toast"
 
 export const useForm = (initialForm, validateForm, url) => {
   const [token, setToken] = useLocalStorage("token", null)
@@ -48,7 +49,7 @@ export const useForm = (initialForm, validateForm, url) => {
 
   const handleSignup = async (e) => {
     e.preventDefault()
-    /* Establezco todos los campos como touched */
+    /* Setteo todos los campos como touched */
     setTouched(touchAll(form))
 
     /* Valido nuevamente el formulario antes de enviar */
@@ -60,7 +61,8 @@ export const useForm = (initialForm, validateForm, url) => {
     setIsLoading(true)
     try {
       await axios.post(url, form)
-      navigate("/login", { state: { justSignedUp: true } })
+      navigate("/")
+      toastSuccess("User created successfully")
     } catch (err) {
       setError(err?.response?.data?.error ?? "Signup failed")
     } finally {

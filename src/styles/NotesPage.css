@@ -1,0 +1,35 @@
+.notesMain {
+  min-height: 90dvh;
+  height: 100%;
+  background-color: rgba(2, 3, 11, 0.972);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 1.6rem;
+}
+.notes {
+  margin-bottom: 2.5rem;
+  display: grid;
+  gap: 1rem;
+  padding: 0 3rem;
+  width: 100%;
+}
+.notes.empty {
+  grid-template-columns: minmax(290px, 50rem);
+}
+.notes.multi {
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+}
+.fetchError{
+  color: rgb(182, 48, 48);
+  font-weight: bold;
+  text-align: center;
+  padding: 0 2rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 700px) {
+  .notes{
+    padding: 0 1rem;
+  }
+}

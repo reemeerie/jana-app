@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 import { useForm } from "../hooks/useForm"
-import { validateSignUp } from "../utils/validations"
+import { validateSignUp } from "../utils/userValidations"
 import { Button } from "../components/Button"
 import { InputField } from "../components/InputField"
-import "../styles/Login.css"
+import "../styles/LoginPage.css"
 
 const initialForm = {
   email: "",
@@ -75,7 +75,7 @@ export const SignUpPage = () => {
           error={errors.password2}
           touched={touched.password2}
         />
-        <Button label="Login" loading={isLoading} />
+        <Button label="Sign up" loading={isLoading} />
         {error && <p className="error apiError">{error}</p>}
         <Link to="/" className="createAccount">
           Already a member? Log in

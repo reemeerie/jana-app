@@ -1,41 +1,138 @@
-import axios from "axios"
+import { useState } from "react"
+import { dateParser } from "../utils/notesHelpers"
+import { toastSuccess, toastError } from "../utils/toast"
+import { getErrorMessage } from "../utils/getErrorMessage"
 import "../styles/Note.css"
 
-export const Note = ({ note }) => {
-  const date = new Date(note.date)
-  let day = date.getDate()
-  const month = date.getMonth() + 1
-  let year = date.getFullYear()
-  let actualDate = `${day}-${month}-${year}`
-  const token = JSON.parse(window.localStorage.getItem("token"))
+const noteLimits = {
+  title: 100,
+  content: 400,
+}
 
-  const handleDelete = async () => {
-    const url = `https://jana-api.vercel.app/api/notes/${note.id}`
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+export const Note = ({ note, onDelete, onEdit }) => {
+  const [saving, setSaving] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [draft, setDraft] = useState({
+    title: note.title,
+    content: note.content,
+  })
+  const charsRemaining = noteLimits.content - draft.content.length
+  const noteEmpty = !draft.title.trim() && !draft.content.trim()
+  const unchanged = draft.title === note.title && draft.content === note.content
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    const limit = noteLimits[name]
+
+    if (limit && value.length > limit) return
+
+    setDraft((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const startEdit = () => {
+    setDraft({ title: note.title, content: note.content })
+    setIsEditing(true)
+  }
+
+  const cancelEdit = () => {
+    setDraft({ title: note.title, content: note.content })
+    setIsEditing(false)
+  }
+
+  const saveEdit = async () => {
+    if (unchanged) {
+      setIsEditing(false)
+      return
     }
+    setSaving(true)
     try {
-      const res = await axios.delete(url, config)
-      console.log(res)
+      await onEdit(note.id, draft)
+      toastSuccess("Note updated successfully")
+      setIsEditing(false)
     } catch (err) {
-      console.log(err)
+      toastError(`Could not update note: ${getErrorMessage(err)}`)
+    } finally {
+      setSaving(false)
     }
-    window.location.reload()
   }
 
   return (
     <div className="note">
       <div className="noteContent">
-        <span className="title">{note.title}</span>
-        <p className="content">{note.content}</p>
+        {isEditing ? (
+          <>
+            <input
+              className="editTitle"
+              type="text"
+              name="title"
+              value={draft.title}
+              onChange={handleChange}
+              placeholder="Note title"
+            />
+            <textarea
+              className="editContent"
+              spellCheck="false"
+              name="content"
+              value={draft.content}
+              cols="30"
+              rows="10"
+              onChange={handleChange}
+              placeholder="Note content"
+            />
+          </>
+        ) : (
+          <>
+            <span className="title">{note.title}</span>
+            <p className="content">{note.content}</p>
+          </>
+        )}
       </div>
       <div className="noteFooter">
-        <small>{actualDate}</small>
-        <button className="delete" onClick={handleDelete}>
-          <i className="fa-solid fa-trash"></i>
-        </button>
+        <small>
+          {isEditing ? `${charsRemaining} Remaining` : dateParser(note.date)}
+        </small>
+        <div className="noteButtonContainer">
+          {isEditing ? (
+            <>
+              <button
+                className="actionButton"
+                type="button"
+                onClick={cancelEdit}
+                disabled={saving}
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+              <button
+                className="actionButton"
+                type="button"
+                onClick={saveEdit}
+                disabled={saving || noteEmpty}
+              >
+                <i className="fa-solid fa-check"></i>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="actionButton"
+                onClick={startEdit}
+                type="button"
+              >
+                <i className="fa-solid fa-pen"></i>
+              </button>
+              <button
+                className="actionButton"
+                onClick={() => onDelete(note.id)}
+                type="button"
+              >
+                <i className="fa-solid fa-trash"></i>
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )

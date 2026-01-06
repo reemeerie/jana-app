@@ -1,11 +1,11 @@
 .loginContainer {
-  height: 90dvh;
+  height: 100dvh;
   background-color: rgba(2, 3, 11, 0.972);
 }
 .formContent {
   max-width: 700px;
   width: 100%;
-  padding: 5rem 2rem 0;
+  padding: 9rem 2rem 0;
   display: flex;
   justify-self: center;
   flex-direction: column;
@@ -31,6 +31,10 @@
 }
 .apiError{
   align-self: center;
+}
+.success{
+  color: green;
+  font-weight: bold;
 }
 
 @media (max-width: 400px) {

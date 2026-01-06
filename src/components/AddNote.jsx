@@ -1,62 +1,61 @@
 import { useState } from "react"
-import axios from "axios"
+import { addNote } from "../utils/notesHelpers"
+import { useLocalStorage } from "../hooks/useLocalStorage"
+import { toastError, toastSuccess } from "../utils/toast"
+import { getErrorMessage } from "../utils/getErrorMessage"
 import "../styles/AddNote.css"
 
-export const AddNote = () => {
-  const baseUrl = "https://jana-api.vercel.app/api/notes"
-  const date = new Date()
-  const token = JSON.parse(window.localStorage.getItem("token"))
-  const contentLimit = 400
-  const titleLimit = 100
+const initialNote = {
+  title: "",
+  content: "",
+}
 
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
+const noteLimits = {
+  title: 100,
+  content: 400,
+}
 
-  const [note, setNote] = useState({
-    title: "",
-    content: "",
-    date: "",
-  })
+export const AddNote = ({ onCreate }) => {
+  const [token] = useLocalStorage("token")
+  const [note, setNote] = useState(initialNote)
+  const [saving, setSaving] = useState(false)
+  const charsRemaining = noteLimits.content - note.content.length
+  const noteEmpty = !note.title.trim() && !note.content.trim()
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    if (name === "title" && titleLimit - value.length >= 0) {
-      setNote((prev) => {
-        return { ...prev, [name]: value }
-      })
-    }
-    if (name === "content" && contentLimit - value.length >= 0) {
-      setNote((prev) => {
-        return { ...prev, [name]: value }
-      })
-    }
+    const limit = noteLimits[name]
+
+    if (limit && value.length > limit) return
+
+    setNote((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    let day = date.getDate()
-    const month = date.getMonth() + 1
-    let year = date.getFullYear()
-    let actualDate = `${year}-${month}-${day}`
-    note.date = actualDate
-
+  const submitNote = async () => {
+    setSaving(true)
     try {
-      await axios.post(baseUrl, note, config)
-      window.location.reload()
+      const createdNote = await addNote(note, token)
+      onCreate(createdNote) // actualizo estado de notas con la nueva
+      setNote(initialNote) // reseteo el estado para agregar otra nota
+      toastSuccess("Note created successfully")
     } catch (err) {
-      console.error(err)
+      console.log(err)
+      toastError(`Could not create note: ${getErrorMessage(err)}`)
+    } finally {
+      setSaving(false)
     }
   }
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <section>
         <div className="note new">
           <div className="newNoteContent">
             <input
-              spellCheck="false"
+              className="editTitle"
               type="text"
               name="title"
               onChange={handleChange}
@@ -64,6 +63,7 @@ export const AddNote = () => {
               value={note.title}
             />
             <textarea
+              className="editContent"
               spellCheck="false"
               name="content"
               cols="30"
@@ -74,13 +74,18 @@ export const AddNote = () => {
             ></textarea>
           </div>
           <div className="noteFooter">
-            <small>{contentLimit - note.content.length} Remaining</small>
-            <button type="submit" className="save">
+            <small>{charsRemaining} Remaining</small>
+            <button
+              className="actionButton"
+              onClick={submitNote}
+              type="button"
+              disabled={noteEmpty || saving}
+            >
               <i className="fa-solid fa-plus"></i>
             </button>
           </div>
         </div>
-      </form>
+      </section>
     </>
   )
 }

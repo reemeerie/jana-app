@@ -1,11 +1,13 @@
 .loginContainer {
-  height: 100dvh;
+  min-height: 100vh;
+  height: 100%;
   background-color: rgba(2, 3, 11, 0.972);
 }
 .formContent {
   max-width: 700px;
   width: 100%;
-  padding: 9rem 2rem 0;
+  height: 100%;
+  padding: 7rem 2rem;
   display: flex;
   justify-self: center;
   flex-direction: column;
@@ -14,7 +16,7 @@
 }
 .welcome {
   font-family: gothamMedium;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   font-weight: bold;
 }
 .subtitle {
@@ -37,9 +39,9 @@
   font-weight: bold;
 }
 
-@media (max-width: 400px) {
-  .welcome {
-    font-size: 1.5rem;
+@media (max-width: 500px) {
+  .formContent{
+    padding: 4rem 2rem;
   }
   .createAccount {
     font-size: 0.9rem;
